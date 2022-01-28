@@ -1,1 +1,112 @@
-<app-todo-form></app-todo-form>
+<mat-toolbar color="primary">
+  <mat-toolbar-row> Toolbar </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="content">
+  <div
+    fxFlexFill
+    fxLayout="column wrap"
+    fxLayout.xs="column wrap"
+    fxLayout.sm="column wrap"
+    fxLayoutGap="15px grid"
+    fxLayoutAlign="center"
+  >
+    <div>
+      <form
+        fxLayout="row"
+        fxLayoutAlign="center"
+        [formGroup]="form"
+        #formDirective="ngForm"
+      >
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title *ngIf="isAdd">Add todo</mat-card-title>
+            <mat-card-title *ngIf="!isAdd">Edit todo</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Enter a task</mat-label>
+              <input matInput formControlName="task" />
+            </mat-form-field>
+
+            <div>
+              <label>Priority &nbsp;</label>
+              <mat-radio-group formControlName="priority">
+                <mat-radio-button *ngFor="let p of PRIORITIES" value="{{ p }}"
+                  >{{ p }} &nbsp;</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+
+            <mat-form-field>
+              <mat-label>DD/MM/YYYY</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dueDate"
+                [min]="tomorrow"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-datepicker-toggle>
+            </mat-form-field>
+
+            <div>
+              <!-- buttons -->
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="form.invalid"
+                *ngIf="isAdd"
+                (click)="addTodo()"
+              >
+                Add
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="form.invalid"
+                *ngIf="!isAdd"
+                (click)="updateTodo()"
+              >
+                Update
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title> Todo-list </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p *ngIf="todoValues.length == 0">No Todos</p>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            *ngFor="let t of todoValues; index as i"
+          >
+            <mat-checkbox
+              [checked]="t.status"
+              (change)="t.status = !t.status; saveDone(t)"
+            ></mat-checkbox>
+            <span [ngClass]="{ checked: t.status === true }"
+              >{{ t.task }} {{ t.dueDate | date }} {{ t.priority }}</span
+            >
+
+            <button mat-icon-button (click)="editTodo(i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteTodo(i)" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

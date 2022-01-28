@@ -3,5 +3,5 @@ export interface Todo {
   priority: string;
   dueDate: Date;
   taskId: string;
-  status?: boolean;
+  status: boolean;
 }
