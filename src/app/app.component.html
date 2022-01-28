@@ -91,19 +91,22 @@
             *ngFor="let t of todoValues; index as i"
           >
             <mat-checkbox
+              fxLayoutAlign="start"
               [checked]="t.status"
               (change)="t.status = !t.status; saveDone(t)"
             ></mat-checkbox>
             <span [ngClass]="{ checked: t.status === true }"
-              >{{ t.task }} {{ t.dueDate | date }} {{ t.priority }}</span
+              >Task: {{ t.task }} / Due Date: {{ t.dueDate | date }} / Priority:
+              {{ t.priority }}</span
             >
-
-            <button mat-icon-button (click)="editTodo(i)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteTodo(i)" color="warn">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <span fxLayoutAlign="end">
+              <button mat-icon-button (click)="editTodo(i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteTodo(i)" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </span>
           </div>
         </mat-card-content>
       </mat-card>
